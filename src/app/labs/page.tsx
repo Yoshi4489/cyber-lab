@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Catalog } from "@/features/catalog/catalog";
+import { labs } from "@/features/catalog/data";
 
 export const metadata: Metadata = { title: "Explore labs" };
 
@@ -13,7 +14,7 @@ export default function LabsPage() {
           <p>Explore 12 sample labs, at your own pace. Every session is a demo.</p>
         </div>
       </div>
-      <Catalog />
+      <Catalog labs={labs} />
     </>
   );
 }
