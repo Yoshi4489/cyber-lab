@@ -1,0 +1,49 @@
+slug: web-001-cookie-monster
+title: Cookie Monster
+category: web
+difficulty: easy
+base_points: 100
+exposure: http
+author: yoshi
+
+description: |
+  The Cookie Monster Bakery has a members-only area for their premium
+  subscribers. You have a free account.
+
+  Become an administrator and read the secret recipe.
+
+scope: |
+  The provided instance only. Do not attack the platform, other users'
+  instances, or anything outside your target URL.
+
+image:
+  context: .
+  dockerfile: Dockerfile
+
+runtime:
+  port: 8080
+  memory_mb: 256
+  cpus: 0.5
+  pids: 64
+  readonly_rootfs: true
+  tmpfs:
+    - /tmp
+  cap_add: []
+  egress: deny
+
+health:
+  type: http
+  path: /
+  expect_status: 200
+  timeout_seconds: 30
+
+flag:
+  kind: dynamic
+  inject: env
+
+hints:
+  - cost: 10
+    body: The session cookie is not as opaque as it looks.
+  - cost: 25
+    body: Decode it, change it, and ask yourself what the server checks before
+      it trusts what you sent back.
