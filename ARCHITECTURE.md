@@ -1,5 +1,54 @@
 # Architecture
 
+## Current frontend boundary
+
+The Next.js application is at this repository root (`src/app`). The backend is
+an independent sibling repository, `../cyber-range-backend`. The rest of this
+document describes the intended full platform.
+
+```text
+Browser -> Next.js portal -> Backend HTTP API -> Database / lifecycle queue
+                               Privileged worker -> mTLS -> Disposable lab nodes
+```
+
+Pages render typed sample content from `src/lib/catalog.ts`. Search, filters,
+sorting, and layout run in the catalog client component. Saved slugs use
+`cyber-range:saved-labs:v1` in local storage; preferences never establish user
+identity. Route shells and briefings use Server Components; interaction and
+browser storage components opt into the client boundary.
+
+`GET /api/backend-status` calls the server-only adapter in `src/lib/backend.ts`.
+It requests the fixed `/healthz` path at `BACKEND_URL`, validates the response
+with Zod, rejects redirects, and times out after three seconds. It returns only
+`{ status: "not-configured" | "reachable" | "unavailable" }`, with no cache.
+The URL is deployment configuration, never browser input. Production remote
+connections require HTTPS. This checks API liveness, not database, queue,
+session, or target readiness.
+
+The field guide checks on demand. The frontend still shows preview content
+even if the API is reachable. The backend's `/v1/challenges` is a scaffold;
+production catalog compatibility is not claimed.
+
+### Connecting the next features
+
+1. Agree a versioned catalog schema: public challenge ID, slug, title, category,
+   difficulty, description, objectives, prerequisites, tags, duration, points,
+   and actual availability. Validate on the server and handle unavailable data
+   explicitly. Never expose image references, internal IPs, or flag material.
+2. Implement server-verified sessions before protected actions. Better Auth is
+   planned; its storage integration is part of that implementation.
+3. After session and email verification, the Next.js server may mint a short-lived,
+   scoped service token with identity in `sub`. Keep the signing secret outside
+   browser bundles. The backend verifies identity, scope, ownership, and quotas.
+4. Send lifecycle and submission commands through server handlers/actions.
+   Browser-supplied user IDs are not authority. Launch stays disabled until
+   the full authorized path exists.
+5. Publish contracts as a versioned artifact or generated types. Sibling source
+   imports must not be required to build either repository.
+
+No credentials are needed for the UI preview. The frontend holds no Docker
+credentials and makes no Docker calls.
+
 ## Topology
 
 Three trust zones. The boundary between them is the whole design.
@@ -58,7 +107,7 @@ The stack is split by trust and runtime responsibility:
 | Database | Neon | PostgreSQL | Application records and audit data |
 | Orchestrator | Separate VPS | Fastify, BullMQ 6, Redis, Dockerode | Docker Engine API over mTLS |
 | Lab node | Dedicated disposable VPS | Docker, Traefik, host firewall | Vulnerable targets and public ingress |
-| Shared contracts | Repository package | Zod schemas | Request, response, and manifest validation |
+| Shared contracts | Versioned artifact across repos (planned) | Zod schemas / generated types | Request and response validation |
 
 The web portal can request lifecycle operations but cannot create containers.
 The orchestrator can create containers but receives only a signed service token
@@ -79,8 +128,9 @@ either strands a user without a target or leaks a container that runs forever.
      └─────────────┴──▶ failed ──────────────────┘
 ```
 
-**Spawn.** The web app authorizes the request, checks the user's concurrent
-instance quota, inserts an `instances` row in `queued`, and enqueues a job
+**Spawn.** The web app verifies the session and sends an authorized command to
+the backend. The backend checks the concurrent instance quota, inserts an
+`instances` row in `queued`, and enqueues a job
 keyed on `user:challenge` so a double-click cannot produce two containers. A
 partial unique index on live states enforces the same rule at the database
 level, because the idempotency key alone is not a guarantee.
@@ -167,8 +217,9 @@ DELETE /v1/instances/:id                        -> { state }
 GET    /v1/nodes/health                         -> operator only
 ```
 
-Request and response shapes live as Zod schemas in `packages/shared`, imported
-by both sides so a contract change breaks the build rather than production.
+Request and response shapes must be versioned across the two repositories.
+Generated types and runtime validation should catch incompatible changes
+before production. This contract work is still planned.
 
 ## Scoring
 
@@ -187,7 +238,7 @@ is a materialized view refreshed on a schedule, not a rewrite.
 | Concern | Lives in | Why |
 |---|---|---|
 | Auth, catalog, scoring UI | Next.js on Vercel | Stateless, edge-cached, no privileged access |
-| Schema and migrations | `packages/db` | Shared by web and orchestrator |
+| Domain schema and migrations | Backend repository | Owned by the API and orchestrator |
 | Container lifecycle | Orchestrator VPS | Needs Docker API and durable timers |
 | Vulnerable targets | Lab nodes | Disposable, isolated, rebuildable |
 | Ingress and TLS | Traefik on lab nodes | Configured by labels the orchestrator sets |

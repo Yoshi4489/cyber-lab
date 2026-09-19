@@ -9,8 +9,13 @@ A hands-on security training platform. Users browse a catalog of deliberately
 vulnerable challenges, spawn a private isolated target on demand, attack it,
 and submit a flag to score points. Comparable to HackTheBox or TryHackMe.
 
-Status: planning. There is no application code yet. Phase 1 in `PLAN.md` is the
-entry point.
+Status: the frontend preview is implemented at the repository root using
+Next.js App Router. Phase 1 is in progress; auth, live data, scoring, and lab
+spawning remain unfinished. Read `PLAN.md` for the exact boundary.
+
+This is the **frontend repository**. The independent backend is in the sibling
+`../cyber-range-backend` repository. Do not add an orchestrator, Docker access,
+or application database migrations to this frontend.
 
 ## The one fact that changes how you work on this
 
@@ -39,16 +44,18 @@ anything in `apps/orchestrator` or `infra/`.
 
 | Path | What it is | Trust |
 |---|---|---|
-| `apps/web` | Next.js 16 on Vercel. Catalog, auth, scoring, UI. | Trusted, unprivileged |
-| `apps/orchestrator` | Fastify plus BullMQ. Owns container lifecycle. | Trusted, highly privileged |
-| `packages/db` | Drizzle schema, shared by both services. | — |
-| `packages/shared` | Zod contracts and the challenge manifest schema. | — |
+| `src/app` | Next.js pages and server route handlers. | Trusted, unprivileged |
+| `src/components` | Portal UI and reusable UI primitives. | Browser / unprivileged |
+| `src/lib/catalog.ts` | Typed editorial preview data. | Public sample content |
+| `src/lib/backend.ts` | Server-only HTTP adapter. | Trusted, unprivileged |
+| `tests/` | Browser flows and loopback-only backend fixture. | Development only |
+| `../cyber-range-backend` | Separate API, persistence, and lifecycle repo. | Trusted; worker privileged |
 | `challenges/` | Challenge-as-code. One folder each. | Hostile by design |
-| `infra/` | Traefik config, lab node bootstrap. | Semi-trusted |
 
 The orchestrator is the only component holding Docker Engine API credentials,
 which is effectively root on a lab node. Keep it small enough to audit in an
-afternoon. When in doubt, put logic in `apps/web` instead.
+afternoon. Presentation belongs here; persistence and lifecycle logic belong
+in the backend. Empty legacy monorepo directories are not application roots.
 
 ## Stack
 
@@ -56,7 +63,15 @@ Matches `financial-dashboard` deliberately, so patterns carry over: Next.js 16
 App Router, TypeScript, Tailwind, shadcn/ui, Drizzle on Neon Postgres, Better
 Auth, React Hook Form with Zod, Vitest and Playwright.
 
-New to this project: Fastify, BullMQ on Redis, Dockerode, Traefik.
+The frontend currently uses Next.js, React, TypeScript, Tailwind, local Geist
+fonts, shadcn-style source components with Radix primitives, and Playwright.
+Better Auth and live data integration are planned. Fastify, BullMQ on Redis,
+Dockerode, and Traefik belong to the separate backend and lab infrastructure.
+
+Run `npm run lint`, `npm run typecheck`, and `npm run build` for frontend
+changes. For navigation, filtering, storage, or API boundary changes, also run
+`npm run test:e2e` after building. Never present preview data as live targets,
+real points, or authenticated user progress.
 
 ## Documents
 
@@ -151,3 +166,13 @@ it is a backstop and not a substitute for looking at what you staged.
 **Write the body when the why is not obvious.** The summary says what changed.
 If a reviewer would ask "why this way," answer it in the body. Security
 decisions always get a body.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

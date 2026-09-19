@@ -2,19 +2,41 @@
 
 ## Current Status
 
-* Phase 0 - Planning (this document)
-* Phase 1 - Not started
+* Phase 0 - Architecture research and repository split documented
+* Phase 1 - In progress: frontend preview implemented
 * Phase 2 - Not started
 * Phase 3 - Not started
 * Phase 4 - Not started
 * Phase 5 - Not started
 * Phase 6 - Not started
 
+### Frontend implementation checkpoint
+
+This is the standalone frontend, with `src/app` at its root. API, persistence,
+and orchestration belong to `../cyber-range-backend`. The phases below describe
+the whole platform, including planned work.
+
+Completed: Next.js / React / TypeScript / Tailwind foundation, reusable UI
+primitives, six sample lab briefings, combined search and filters, sorting,
+grid/list views, browser bookmarks, three preview learning paths, responsive
+navigation, field guide, and a server-only backend health check. Fonts and SVG
+artwork ship locally. Playwright covers desktop/mobile navigation, catalog
+interactions, bookmark persistence, and the HTTP status boundary.
+
+Next: establish the catalog response contract in the backend; replace sample
+data with validated responses and loading/error states; implement session
+authentication and verification; then add authorized instance operations and
+flag submissions. Never infer backend readiness from `/healthz` alone.
+
+The frontend has no account creation, flag verification, targets, attachments,
+leaderboard, or real progress tracking. Points and durations describe planned
+content. Local bookmarks carry no authorization authority.
+
 ## 1. Technical Architecture & Stack
 
 Three deployables, because one of them has to talk to Docker and Vercel cannot.
 
-**Web app** (`apps/web`) — the part users see.
+**Web app** (`src/app` in this repository) — the part users see.
 
 * **Framework:** Next.js 16 App Router with TypeScript. Same as
   financial-dashboard, so the patterns carry over.
@@ -24,7 +46,7 @@ Three deployables, because one of them has to talk to Docker and Vercel cannot.
 * **Forms & validation:** React Hook Form with Zod.
 * **Hosting:** Vercel.
 
-**Orchestrator** (`apps/orchestrator`) — the control plane.
+**Backend API and orchestrator** (`../cyber-range-backend`) — the control plane.
 
 * **Runtime:** Node with TypeScript, Fastify for the HTTP API.
 * **Container control:** Dockerode against the Docker Engine API on each lab
@@ -43,10 +65,11 @@ Three deployables, because one of them has to talk to Docker and Vercel cannot.
 
 **Shared**
 
-* **Database:** Neon PostgreSQL with Drizzle ORM, in `packages/db`. Both the
-  web app and the orchestrator import the same schema.
-* **Contracts:** Zod schemas in `packages/shared`, so the API between web and
-  orchestrator is typed on both ends.
+* **Database:** Neon PostgreSQL with Drizzle ORM, owned by the backend.
+  Frontend domain reads and writes go through its HTTP API. Decide the auth
+  adapter's storage boundary when Better Auth is implemented.
+* **Contracts:** Versioned HTTP request/response schemas. Publish or generate
+  types for each independent repository rather than importing sibling source.
 * **Testing:** Vitest for units, Playwright for end-to-end flows.
 
 ## 1.1 Researched stack decisions
