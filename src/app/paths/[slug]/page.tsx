@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
-import { learningPaths, getLab } from "@/lib/catalog";
-import { DifficultyBadge } from "@/components/lab-card";
+import { learningPaths, getLab } from "@/features/catalog/data";
+import { DifficultyBadge } from "@/features/catalog/lab-card";
 
 type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;

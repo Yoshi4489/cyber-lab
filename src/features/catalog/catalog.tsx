@@ -12,9 +12,9 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { categories, type Lab } from "@/lib/catalog";
-import { useSavedLabs } from "@/hooks/use-saved-labs";
-import { LabCard } from "@/components/lab-card";
+import { categories, type Lab } from "@/features/catalog/data";
+import { useSavedLabs } from "@/features/bookmarks/use-saved-labs";
+import { LabCard } from "@/features/catalog/lab-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ArrowUpRight, Clock3, Flag } from "lucide-react";
-import type { Lab } from "@/lib/catalog";
-import { LabArt } from "@/components/lab-art";
-import { SaveButton } from "@/components/save-button";
+import type { Lab } from "@/features/catalog/data";
+import { LabArt } from "@/features/catalog/lab-art";
+import { SaveButton } from "@/features/bookmarks/save-button";
 
 export function DifficultyBadge({
   difficulty,

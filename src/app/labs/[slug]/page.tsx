@@ -10,10 +10,10 @@ import {
   LockKeyhole,
   Target,
 } from "lucide-react";
-import { getLab, labs } from "@/lib/catalog";
-import { LabArt } from "@/components/lab-art";
-import { DifficultyBadge } from "@/components/lab-card";
-import { SaveButton } from "@/components/save-button";
+import { getLab, labs } from "@/features/catalog/data";
+import { LabArt } from "@/features/catalog/lab-art";
+import { DifficultyBadge } from "@/features/catalog/lab-card";
+import { SaveButton } from "@/features/bookmarks/save-button";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 

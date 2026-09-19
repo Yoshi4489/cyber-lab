@@ -1,4 +1,4 @@
-import { getBackendStatus } from "@/lib/backend";
+import { getBackendStatus } from "@/features/backend/adapter";
 
 export const dynamic = "force-dynamic";
 

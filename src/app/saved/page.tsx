@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Catalog } from "@/components/catalog";
-import { labs } from "@/lib/catalog";
+import { Catalog } from "@/features/catalog/catalog";
+import { labs } from "@/features/catalog/data";
 
 export const metadata: Metadata = { title: "Saved labs" };
 

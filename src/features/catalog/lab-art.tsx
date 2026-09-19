@@ -6,7 +6,7 @@ import {
   Fingerprint,
   LockKeyhole,
 } from "lucide-react";
-import type { Lab } from "@/lib/catalog";
+import type { Lab } from "@/features/catalog/data";
 
 const icons = {
   cookie: Cookie,

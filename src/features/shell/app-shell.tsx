@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet } from "@/components/ui/sheet";
-import { useSavedLabs } from "@/hooks/use-saved-labs";
+import { useSavedLabs } from "@/features/bookmarks/use-saved-labs";
 
 const navigation = [
   { href: "/", label: "Explore labs", icon: Compass },

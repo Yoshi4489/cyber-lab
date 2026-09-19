@@ -2,7 +2,7 @@
 
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSavedLabs } from "@/hooks/use-saved-labs";
+import { useSavedLabs } from "@/features/bookmarks/use-saved-labs";
 
 export function SaveButton({
   slug,

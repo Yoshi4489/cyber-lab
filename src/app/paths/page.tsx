@@ -7,7 +7,7 @@ import {
   KeyRound,
   Route,
 } from "lucide-react";
-import { learningPaths, getLab } from "@/lib/catalog";
+import { learningPaths, getLab } from "@/features/catalog/data";
 
 export const metadata: Metadata = { title: "Learning paths" };
 const icons = { web: Globe2, search: ScanSearch, key: KeyRound };

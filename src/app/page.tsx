@@ -6,10 +6,10 @@ import {
   Route,
   ShieldCheck,
 } from "lucide-react";
-import { Catalog } from "@/components/catalog";
-import { RangeIllustration } from "@/components/lab-art";
+import { Catalog } from "@/features/catalog/catalog";
+import { RangeIllustration } from "@/features/catalog/lab-art";
 import { Button } from "@/components/ui/button";
-import { labs } from "@/lib/catalog";
+import { labs } from "@/features/catalog/data";
 
 export default function Home() {
   return (

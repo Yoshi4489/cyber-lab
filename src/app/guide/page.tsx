@@ -7,7 +7,7 @@ import {
   FlaskConical,
   ShieldCheck,
 } from "lucide-react";
-import { BackendStatus } from "@/components/backend-status";
+import { BackendStatus } from "@/features/backend/backend-status";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = { title: "Field guide" };
