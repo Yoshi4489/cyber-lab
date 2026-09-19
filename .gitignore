@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Builds
+.next/
+out/
+dist/
+build/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Never commit these. They are root on a lab node.
+*.pem
+*.key
+certs/
+infra/traefik/acme.json
+
+# Test output
+coverage/
+playwright-report/
+test-results/
+.vitest/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Vercel
+.vercel
+
+# TypeScript cache and local browser verification
+*.tsbuildinfo
+.browser-check/
