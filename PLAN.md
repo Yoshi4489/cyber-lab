@@ -1,5 +1,123 @@
 # Development Plan: Cyber Range
 
+## CiscoKU Lab: approved UX implementation (September 2026)
+
+This section takes precedence for the current frontend work. The platform
+architecture and numbered backend phases below remain future work. The user
+authorized implementation after discovery: this delivery is a clickable mockup,
+with no real accounts, payments, challenge internals, or lab execution.
+
+### Discovery summary
+
+| Decision | Confirmed direction |
+|---|---|
+| Identity | CiscoKU Lab; original temporary wordmark and small symbol |
+| Audience | Mixed university learners, mainly 18–24; beginner through advanced |
+| Access | Free; guests browse catalog and briefings; demo username before starting |
+| Language | English first; keep copy ready for future translation |
+| Personality | Friendly, game-like, spacious; TryHackMe and Hack The Box references |
+| Visuals | Green accents; light/dark toggle follows system initially; clean sans with mono accents |
+| Navigation | Home, Labs, Learning Paths (preview), Leaderboard, Profile (preview) |
+| Home | Balanced learning recommendation, browsing, and progress overview |
+| Catalog | 12 mock entries; web, Linux, networking, cryptography, forensics; Easy/Medium/Hard |
+| Cards | Title, topic, difficulty, estimated time, reward |
+| Briefing | Objective, prerequisites, time, difficulty, skills, rewards; placeholder metadata only |
+| Simulation | Start Lab immediately opens a running status panel with a timer; simulated Finish Lab |
+| Progress | Mock XP, levels, badges, completions, skill progress, streak, daily goal |
+| Leaderboard | Global sample XP and rank with fictional usernames |
+| Persistence | Browser-local mock profile, progress, instance state, and theme preference |
+| Delivery | Existing Next.js/TypeScript/Tailwind app, Chrome desktop and tablet; Vercel preview target |
+| Constraints | Solo now, possible small team later; small personal budget; no fixed deadline; 3–5 hours/week |
+
+### Users and goals
+
+* New learner: understand what a lab teaches, choose an approachable starting
+  point, and complete the first simulated session without unexplained jargon.
+* Returning student: see progress, resume a running session, and receive one
+  clear recommendation for the next lab.
+* Experienced learner: filter by topic/difficulty and compare mock XP on the
+  leaderboard without a lengthy onboarding flow.
+
+Long-term success means private runnable labs, learner improvement, and many
+concurrent users. This mockup validates the journey; it cannot validate runtime
+isolation, capacity, real authentication, or learning outcomes.
+
+### Pages and flows
+
+| Page | Purpose |
+|---|---|
+| `/` | Guest introduction; returning demo learner overview |
+| `/signup` | Username-only demo entry, with a clear local-data explanation |
+| `/dashboard` | Next recommendation, active sessions, mock rewards and progress |
+| `/labs` | Search, filter, sort, bookmark, and browse 12 entries |
+| `/labs/[slug]` | Public sample briefing and Start Lab action |
+| `/labs/[slug]/session` | Running, expired, and completed simulation states |
+| `/leaderboard` | Fictional global ranking plus the current demo learner |
+| `/paths`, `/profile` | Honest preview destinations with a route back to Labs |
+| `/saved`, `/guide` | Retained supporting routes; no lab internals |
+
+Guest flow: Home → Labs → Briefing → username → original briefing → Start Lab.
+Learner flow: Home/Dashboard → recommendation or active session → Finish Lab →
+reward and updated dashboard/leaderboard. Preview links clearly explain their
+limited scope. Unknown lab slugs return 404.
+
+### UI delivery roadmap
+
+These are effort estimates, not deadlines. Each group is committed and pushed
+separately after its checks; feature tests travel with the feature they verify.
+
+| Group | Goal and deliverables | Done criteria | Effort |
+|---|---|---|---|
+| Structure | Feature folders, scoped styles, build/test CI | Existing behavior passes unchanged | 2–3 h |
+| Identity | Theme controls, original mark, shared navigation | Chrome desktop/tablet; light/dark and reduced motion work | 4–6 h |
+| Discovery | Catalog, 12 metadata fixtures, guest landing and briefings | Combined filters, empty state, bookmarks, 404 work | 4–6 h |
+| Demo learner | Username entry, persistent state, dashboard | Refresh, sign out/re-entry, storage recovery work | 4–6 h |
+| Lab simulation | Start, countdown, expiry, finish, rewards | No network execution; completion awards once per lab | 4–6 h |
+| Community preview | Fictional leaderboard; paths/profile placeholders | Rankings update from demo progress; preview links are clear | 2–3 h |
+| Verification | Full browser flow, visual review, documentation | Lint, types, build, browser tests, desktop/tablet review pass | 3–4 h |
+
+Total planning estimate: 23–34 hours, roughly 5–12 weeks at the stated pace.
+
+### Design direction
+
+Option A, recommended and implemented: a friendly learning workspace with
+spacious cards, soft green surfaces, readable typography, clear primary actions,
+and restrained progress rewards. Option B: a more terminal-like treatment with
+stronger mono accents. A best matches the confirmed beginner-friendly direction;
+technical accents stay small. Theme colors must carry meaning through text/icons
+as well as color, with visible focus and reduced-motion support.
+
+### Mock fixtures and state boundaries
+
+Use 12 metadata-only entries across the five selected categories. Do not create
+challenge narratives, tasks, flags, solve instructions, terminals, or targets.
+Reuse existing sample titles where useful. Editorial rewards and durations are
+illustrative fixture values, not production scoring or runtime policy.
+
+Keep demo identity and progress in a versioned browser store with validated
+reads. Derive XP from unique completions and the catalog rather than trusting a
+stored total. Keep mock reward rules centralized and documented in code. A
+session's expiration uses an absolute timestamp so reloads cannot restart its
+timer. Multiple lab entries can have their own simulated sessions. Storage
+failure must be visible and the current tab should remain usable.
+
+The mock state never grants server access. No application API or database
+schema changes are required. The existing optional backend health route retains
+its server-only boundary. Do not connect simulated actions to the backend.
+
+### UX risks and acceptance
+
+| Risk | Mitigation / acceptance check |
+|---|---|
+| Mock activity mistaken for real labs or progress | Persistent demo labeling; no fabricated access URL; Finish Lab explicitly says simulated |
+| Beginners face too many choices | One next recommendation; plain copy; concise card metadata; recoverable empty filters |
+| Rewards or local state confuse reviewers | No duplicate XP; countdown survives refresh; clear local-storage notice; visible reset/sign-out controls |
+
+Browser checks cover guest gating and return destination, combined filters,
+bookmarks, theme/system preference, local persistence and malformed storage,
+start/expiry/completion, duplicate rewards, leaderboard changes, preview routes,
+responsive navigation, keyboard focus, and the unchanged backend HTTP boundary.
+
 ## Current Status
 
 * Phase 0 - Architecture research and repository split documented
