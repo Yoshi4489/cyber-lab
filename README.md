@@ -1,64 +1,69 @@
 # Cyber Range
 
-A hands-on security training platform. Users browse a catalog of deliberately
-vulnerable challenges, spawn a private isolated instance of a target on demand,
-attack it in their browser or over VPN, and submit a flag to score points.
-
-Think HackTheBox / TryHackMe, built on the same stack as the other apps in this
-workspace.
+A hands-on security training platform. Users browse deliberately vulnerable
+challenges, start a private target on demand, attack it through a browser or
+VPN, and submit a flag for points.
 
 ## Status
 
-Planning. No code yet. Read `PLAN.md` first, then `ARCHITECTURE.md`, then
-`SECURITY.md`.
+Planning. There is no application code yet. Read `PLAN.md`, then
+`ARCHITECTURE.md`, then `SECURITY.md` before implementation.
+
+## Canonical documentation
+
+The project keeps system decisions in a small set of root documents. The
+component folders do not contain duplicate README files.
+
+| Document | Purpose |
+|---|---|
+| `AGENTS.md` | Context, security rules, and working conventions. |
+| `PLAN.md` | Researched stack, data model, phases, and capacity plan. |
+| `ARCHITECTURE.md` | Trust zones, deployment boundaries, lifecycle, and API. |
+| `SECURITY.md` | Threat model and required launch controls. |
+| `docs/challenge-authoring.md` | Challenge manifest and author workflow. |
+| `docs/adr/` | Decisions that should not be repeatedly revisited. |
 
 ## Repo map
 
 ```
 cyber-range/
-├── PLAN.md                  Phased build plan. Start here.
-├── ARCHITECTURE.md          System design, instance lifecycle, data model.
-├── SECURITY.md              Threat model and the controls that answer it.
+├── AGENTS.md
+├── README.md
+├── PLAN.md
+├── ARCHITECTURE.md
+├── SECURITY.md
 ├── docs/
-│   ├── challenge-authoring.md   How to write and ship a challenge.
-│   └── adr/                     Architecture decision records.
+│   ├── challenge-authoring.md
+│   └── adr/
 ├── apps/
-│   ├── web/                 Next.js app. Catalog, auth, scoring, UI.
-│   └── orchestrator/        Always-on control plane. Talks to Docker.
+│   ├── web/                 Next.js user portal
+│   └── orchestrator/        Fastify control plane for lab lifecycle
 ├── packages/
-│   ├── db/                  Drizzle schema and migrations.
-│   └── shared/              Zod contracts shared by web and orchestrator.
-├── challenges/              Challenge-as-code. One folder per challenge.
-└── infra/                   Traefik config, compose files, host bootstrap.
+│   ├── db/                  Drizzle schema and migrations
+│   └── shared/              Zod contracts and challenge manifest schema
+├── challenges/              Challenge-as-code, one folder per challenge
+└── infra/                   Lab-node bootstrap, Docker, and Traefik
 ```
 
-## The one thing that makes this project different
+## The security boundary
 
-Every other web app you build assumes users are not hostile. This one hands
-them a machine and asks them to break it. That inverts the usual threat model:
-the interesting attacks are not against the target, they are against the
-platform that hosts the target.
+Users are attackers by design and are expected to gain full control of their
+target. The important question is what they can reach after that happens.
 
-Two rules follow from that, and they drive most of the architecture:
+1. The control plane never runs on the same host as a target.
+2. Targets have default-deny egress, no private-network reachability, hard
+   resource caps, short TTLs, and disposable hosts.
 
-1. **The control plane never runs on the same host as a target.** The Next.js
-   app, the database, and the orchestrator live on infrastructure that a user
-   who fully owns a target container still cannot reach.
-2. **Targets are guilty until proven innocent.** Default-deny egress, no
-   private-network reachability, hard resource caps, short TTL, disposable
-   hosts.
+See `SECURITY.md` for the complete threat model.
 
-`SECURITY.md` works through the rest.
+## Why a separate orchestrator
 
-## Why a separate orchestrator instead of doing it in Next.js
-
-Vercel cannot run Docker, and serverless functions cannot hold the long-lived
-timers that expire instances. The orchestrator is a small always-on Node
-service on a VPS that owns all container lifecycle. The web app talks to it
-over an authenticated HTTP API and never touches a Docker socket.
+Vercel cannot run Docker, and serverless functions are not the right place for
+durable instance timers. The orchestrator is a small always-on Node service on
+a VPS. It owns container lifecycle and talks to lab nodes over authenticated
+Docker Engine API connections. The web app never receives Docker access.
 
 ## Quick start
 
-Nothing to run yet. Phase 1 in `PLAN.md` scaffolds the web app and ships the
-catalog with static challenges, before any container spawning exists.
-"# cyber-lab" 
+Nothing runs yet. Phase 1 in `PLAN.md` builds the catalog and scoring loop
+before container spawning is introduced.
