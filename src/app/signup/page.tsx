@@ -8,5 +8,5 @@ export default async function SignupPage({ searchParams }: { searchParams: Promi
   const { lab: slug } = await searchParams;
   const lab = typeof slug === "string" ? getLab(slug) : undefined;
   // Only catalog slugs may form return destinations; never accept arbitrary URLs.
-  return <Signup destination={lab ? `/labs/${lab.slug}` : "/"} />;
+  return <Signup destination={lab ? `/labs/${lab.slug}` : "/dashboard"} />;
 }

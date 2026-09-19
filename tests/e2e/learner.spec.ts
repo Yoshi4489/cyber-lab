@@ -21,5 +21,5 @@ test("malformed saved data recovers and return destinations cannot leave the sit
   await expect(page.getByLabel("Username", { exact: true })).toHaveValue("");
   await page.getByLabel("Username", { exact: true }).fill("safe_learner");
   await page.getByRole("button", { name: "Continue", exact: true }).click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
 });
