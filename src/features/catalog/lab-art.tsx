@@ -1,57 +1,14 @@
-import {
-  Cookie,
-  Terminal,
-  KeyRound,
-  Network,
-  Fingerprint,
-  LockKeyhole,
-} from "lucide-react";
-import type { Lab } from "@/features/catalog/data";
-
-const icons = {
-  cookie: Cookie,
-  terminal: Terminal,
-  cipher: KeyRound,
-  network: Network,
-  fingerprint: Fingerprint,
-  lock: LockKeyhole,
-};
-const annotations = {
-  cookie: "SESSION_INSPECTOR",
-  terminal: "SYSTEM_DIAGNOSTICS",
-  cipher: "DECODE_SEQUENCE",
-  network: "PACKET_CAPTURE",
-  fingerprint: "TRACE_EVIDENCE",
-  lock: "VERIFY_PERMISSION",
-};
-
+import { Cookie, Terminal, KeyRound, Network, Fingerprint, LockKeyhole } from "lucide-react";
+import type { Lab } from "./data";
+import styles from "./art.module.css";
+const icons = { cookie: Cookie, terminal: Terminal, cipher: KeyRound, network: Network, fingerprint: Fingerprint, lock: LockKeyhole };
 export function LabArt({ lab, large = false }: { lab: Lab; large?: boolean }) {
   const Icon = icons[lab.artwork];
-  return (
-    <div
-      className={`lab-art art-${lab.accent} ${large ? "art-large" : ""}`}
-      aria-hidden="true"
-    >
-      <div className="art-grid" />
-      <span className="art-coordinate">{lab.code}</span>
-      <span className="art-cross art-cross-one">+</span>
-      <span className="art-cross art-cross-two">+</span>
-      <div className="art-orbit orbit-one" />
-      <div className="art-orbit orbit-two" />
-      <div className="art-icon">
-        <Icon strokeWidth={1.25} />
-      </div>
-      <span className="art-annotation">
-        {annotations[lab.artwork]}
-        <span className="art-blink">_</span>
-      </span>
-      <span className="art-corner">
-        [ 0{lab.code.endsWith("003") ? 3 : lab.code.endsWith("002") ? 2 : 1} ]
-      </span>
-    </div>
-  );
+  return <div className={styles.art} data-accent={lab.accent} data-large={large} aria-hidden="true">
+    <div className={styles.grid} /><div className={styles.orbit} /><div className={styles.orbit} />
+    <span className={styles.icon}><Icon strokeWidth={1.5} /></span><span className={styles.plus}>+</span><span className={styles.code}>{lab.category.toUpperCase()} / EXPLORE</span>
+  </div>;
 }
-
 export function RangeIllustration() {
   return (
     <svg

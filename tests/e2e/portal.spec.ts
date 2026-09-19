@@ -9,11 +9,11 @@ test("catalog combines search, category and difficulty; empty state can recover"
   await expect(
     page.getByRole("heading", { name: "Welcome to the range." }),
   ).toBeVisible();
-  await expect(page.locator(".lab-card")).toHaveCount(12);
+  await expect(page.getByTestId("lab-card")).toHaveCount(12);
   await page.getByRole("button", { name: "Web security", exact: true }).click();
-  await expect(page.locator(".lab-card")).toHaveCount(3);
+  await expect(page.getByTestId("lab-card")).toHaveCount(3);
   await page.getByLabel("Difficulty", { exact: true }).selectOption("Easy");
-  await expect(page.locator(".lab-card")).toHaveCount(1);
+  await expect(page.getByTestId("lab-card")).toHaveCount(1);
   await expect(
     page.getByRole("heading", { name: "Cookie Monster" }),
   ).toBeVisible();
@@ -22,9 +22,9 @@ test("catalog combines search, category and difficulty; empty state can recover"
     page.getByRole("heading", { name: "No labs found" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Reset filters" }).click();
-  await expect(page.locator(".lab-card")).toHaveCount(12);
+  await expect(page.getByTestId("lab-card")).toHaveCount(12);
   await page.getByLabel("Sort labs").selectOption("shortest");
-  await expect(page.locator(".lab-card").first()).toContainText("First Steps in Linux");
+  await expect(page.getByTestId("lab-card").first()).toContainText("First Steps in Linux");
   expect(errors).toEqual([]);
 });
 
@@ -39,7 +39,7 @@ test("bookmarks persist across navigation and reload, then can be removed", asyn
     page.getByRole("button", { name: "Unsave Cookie Monster", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   await page.goto("/saved");
-  await expect(page.locator(".lab-card")).toHaveCount(1);
+  await expect(page.getByTestId("lab-card")).toHaveCount(1);
   await page.reload();
   await expect(
     page.getByRole("heading", { name: "Cookie Monster" }),
@@ -103,9 +103,9 @@ test("navigation and layout work at the current viewport", async ({
     await expect(menu).toBeFocused();
   } else {
     await page.getByRole("button", { name: "List view" }).click();
-    await expect(page.locator(".lab-grid")).toHaveClass(/lab-list/);
+    await expect(page.getByTestId("lab-grid")).toHaveAttribute("data-layout", "list");
     await page.getByRole("button", { name: "Grid view" }).click();
-    await expect(page.locator(".lab-grid")).not.toHaveClass(/lab-list/);
+    await expect(page.getByTestId("lab-grid")).toHaveAttribute("data-layout", "grid");
     await page
       .getByRole("navigation", { name: "Main navigation" })
       .getByRole("link", { name: "Learning paths" })

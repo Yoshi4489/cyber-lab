@@ -2,6 +2,6 @@
 @import "../styles/primitives.css";
 @import "../features/shell/shell.css";
 @import "../features/landing/landing.css";
-@import "../features/catalog/catalog.css";
+@import "../features/bookmarks/bookmarks.css";
 @import "../styles/legacy-pages.css";
 @import "../styles/responsive.css";

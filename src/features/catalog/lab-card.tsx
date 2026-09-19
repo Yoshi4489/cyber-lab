@@ -1,66 +1,24 @@
 import Link from "next/link";
-import { ArrowUpRight, Clock3, Flag } from "lucide-react";
-import type { Lab } from "@/features/catalog/data";
-import { LabArt } from "@/features/catalog/lab-art";
+import { ArrowUpRight, Clock3, Zap } from "lucide-react";
+import type { Lab } from "./data";
+import { LabArt } from "./lab-art";
 import { SaveButton } from "@/features/bookmarks/save-button";
+import styles from "./catalog.module.css";
 
-export function DifficultyBadge({
-  difficulty,
-}: {
-  difficulty: Lab["difficulty"];
-}) {
-  return (
-    <span className={`difficulty difficulty-${difficulty.toLowerCase()}`}>
-      <span className="difficulty-bars" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </span>
-      {difficulty}
-    </span>
-  );
+export function DifficultyBadge({ difficulty }: { difficulty: Lab["difficulty"] }) {
+  return <span className={styles.difficulty} data-difficulty={difficulty.toLowerCase()}>
+    <span aria-hidden="true">●</span>{difficulty}
+  </span>;
 }
 
 export function LabCard({ lab }: { lab: Lab }) {
-  return (
-    <article className="lab-card">
-      <Link
-        href={`/labs/${lab.slug}`}
-        className="lab-art-link"
-        tabIndex={-1}
-        aria-hidden="true"
-      >
-        <LabArt lab={lab} />
-      </Link>
-      <div className="lab-card-body">
-        <div className="lab-card-meta">
-          <span className="category-label">{lab.category}</span>
-          <DifficultyBadge difficulty={lab.difficulty} />
-        </div>
-        <h3>
-          <Link href={`/labs/${lab.slug}`}>
-            {lab.title}
-            <ArrowUpRight size={18} />
-          </Link>
-        </h3>
-        <p>{lab.description}</p>
-        <div className="lab-tags">
-          {lab.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
-        <div className="lab-card-footer">
-          <span>
-            <Clock3 size={14} />
-            {lab.minutes} min
-          </span>
-          <span>
-            <Flag size={14} />
-            {lab.points} pts
-          </span>
-          <SaveButton slug={lab.slug} title={lab.title} />
-        </div>
-      </div>
-    </article>
-  );
+  return <article className={styles.card} data-testid="lab-card">
+    <Link href={`/labs/${lab.slug}`} tabIndex={-1} aria-hidden="true"><LabArt lab={lab} /></Link>
+    <div className={styles.cardBody}>
+      <div className={styles.meta}><span>{lab.category}</span><DifficultyBadge difficulty={lab.difficulty} /></div>
+      <h3><Link href={`/labs/${lab.slug}`}>{lab.title}<ArrowUpRight size={17} /></Link></h3>
+      <p>{lab.description}</p>
+      <div className={styles.cardFooter}><span><Clock3 size={14} />{lab.minutes} min</span><span><Zap size={14} />{lab.points} demo XP</span><SaveButton slug={lab.slug} title={lab.title} /></div>
+    </div>
+  </article>;
 }
