@@ -9,7 +9,7 @@ test("catalog combines search, category and difficulty; empty state can recover"
   await expect(
     page.getByRole("heading", { name: "Welcome to the range." }),
   ).toBeVisible();
-  await expect(page.locator(".lab-card")).toHaveCount(6);
+  await expect(page.locator(".lab-card")).toHaveCount(12);
   await page.getByRole("button", { name: "Web security", exact: true }).click();
   await expect(page.locator(".lab-card")).toHaveCount(3);
   await page.getByLabel("Difficulty", { exact: true }).selectOption("Easy");
@@ -22,9 +22,9 @@ test("catalog combines search, category and difficulty; empty state can recover"
     page.getByRole("heading", { name: "No labs found" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Reset filters" }).click();
-  await expect(page.locator(".lab-card")).toHaveCount(6);
+  await expect(page.locator(".lab-card")).toHaveCount(12);
   await page.getByLabel("Sort labs").selectOption("shortest");
-  await expect(page.locator(".lab-card").first()).toContainText("Cipher Zero");
+  await expect(page.locator(".lab-card").first()).toContainText("First Steps in Linux");
   expect(errors).toEqual([]);
 });
 
