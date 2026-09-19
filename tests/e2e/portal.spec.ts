@@ -52,7 +52,7 @@ test("bookmarks persist across navigation and reload, then can be removed", asyn
   ).toBeVisible();
 });
 
-test("lab and path links lead to briefings; launch remains unavailable", async ({
+test("lab and path links lead to briefings with a demo entry point", async ({
   page,
 }) => {
   await page.goto("/paths");
@@ -68,8 +68,8 @@ test("lab and path links lead to briefings; launch remains unavailable", async (
     page.getByRole("heading", { name: "What you’ll learn" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Launch unavailable" }),
-  ).toBeDisabled();
+    page.getByRole("link", { name: "Start Lab" }),
+  ).toHaveAttribute("href", "/signup?lab=cookie-monster");
   await page
     .getByRole("button", { name: "Save Cookie Monster", exact: true })
     .click();

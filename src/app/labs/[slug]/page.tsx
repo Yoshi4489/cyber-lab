@@ -14,7 +14,7 @@ import { getLab, labs } from "@/features/catalog/data";
 import { LabArt } from "@/features/catalog/lab-art";
 import { DifficultyBadge } from "@/features/catalog/lab-card";
 import { SaveButton } from "@/features/bookmarks/save-button";
-import { Button } from "@/components/ui/button";
+import { StartLab } from "@/features/session/start-lab";
 import { Badge } from "@/components/ui/badge";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -104,18 +104,15 @@ export default async function LabPage({ params }: Props) {
             <div className="launch-icon">
               <LockKeyhole size={24} />
             </div>
-            <Badge>IN DEVELOPMENT</Badge>
-            <h2>Your lab is taking shape.</h2>
+            <Badge>DEMO SESSION</Badge>
+            <h2>Your own little learning space.</h2>
             <p>
-              This briefing is a preview. Private targets and flag submissions
-              will be available when the live range opens.
+              Try a simulated session with a countdown and sample rewards.
+              Choose a demo username first. Real lab access comes later.
             </p>
-            <Button disabled className="full-width">
-              <LockKeyhole size={15} />
-              Launch unavailable
-            </Button>
+            <StartLab slug={lab.slug} />
             <span className="launch-note">
-              No instance is running or consuming compute.
+              UI simulation only. No real instance is created.
             </span>
             <div className="launch-divider" />
             <h3>Make the most of the preview</h3>
