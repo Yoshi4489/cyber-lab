@@ -1,7 +1,12 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
-import { emptyLearner, readLearner, usernameSchema, type Learner } from "./model";
+import {
+  emptyLearner,
+  readLearner,
+  usernameSchema,
+  type Learner,
+} from "./model";
 
 export const LEARNER_KEY = "ciscoku:learner:v1";
 const changeEvent = "ciscoku:learner-change";
@@ -18,14 +23,21 @@ function subscribe(callback: () => void) {
 }
 function snapshot() {
   if (storageUnavailable) return fallback;
-  try { return window.localStorage.getItem(LEARNER_KEY); }
-  catch { return fallback; }
+  try {
+    return window.localStorage.getItem(LEARNER_KEY);
+  } catch {
+    return fallback;
+  }
 }
 function write(next: Learner) {
   const raw = JSON.stringify(next);
   fallback = raw;
-  try { window.localStorage.setItem(LEARNER_KEY, raw); storageUnavailable = false; }
-  catch { storageUnavailable = true; }
+  try {
+    window.localStorage.setItem(LEARNER_KEY, raw);
+    storageUnavailable = false;
+  } catch {
+    storageUnavailable = true;
+  }
   window.dispatchEvent(new Event(changeEvent));
 }
 export function updateLearner(update: (current: Learner) => Learner) {
@@ -45,7 +57,7 @@ export function useLearner() {
 export function enterDemo(name: string) {
   const parsed = usernameSchema.safeParse(name);
   if (!parsed.success) return false;
-  updateLearner(current => ({
+  updateLearner((current) => ({
     ...(current.username === parsed.data ? current : emptyLearner),
     username: parsed.data,
     signedIn: true,
@@ -53,6 +65,8 @@ export function enterDemo(name: string) {
   return true;
 }
 export function leaveDemo() {
-  updateLearner(current => ({ ...current, signedIn: false }));
+  updateLearner((current) => ({ ...current, signedIn: false }));
 }
-export function resetDemo() { write(emptyLearner); }
+export function resetDemo() {
+  write(emptyLearner);
+}

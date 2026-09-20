@@ -1,20 +1,121 @@
-.onboarding { max-width: 1000px; margin: 48px auto; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); border-radius: 24px; overflow: hidden; background: var(--card); }
-.intro { background: var(--soft-green, #202c22); padding: 48px 36px; }
-.icon { width: 62px; height: 62px; border-radius: 20px; background: var(--primary); color: var(--primary-foreground); display: grid; place-items: center; margin-bottom: 28px; }
-.intro h1 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -1.5px; line-height: 1.2; margin: 14px 0 20px; }
-.intro > p:last-of-type { color: var(--muted-foreground); line-height: 1.8; }
-.intro ul { list-style: none; padding: 0; display: grid; gap: 18px; margin: 32px 0 0; }
-.intro li { display: flex; gap: 10px; align-items: center; font-size: 13px; }
-.intro li svg { color: var(--primary); }
-.formPanel { padding: 48px 36px; }
-.pill { color: var(--primary); font-size: 10px; letter-spacing: 1.5px; font-family: var(--font-geist-mono); }
-.formPanel h2 { font-size: 26px; letter-spacing: -.8px; margin: 16px 0 10px; }
-.formPanel > p { color: var(--muted-foreground); line-height: 1.7; }
-.formPanel form { margin: 28px 0 22px; }
-.formPanel label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 10px; }
-.formPanel input { width: 100%; min-height: 48px; border: 1px solid var(--border); border-radius: 9px; padding: 0 14px; background: var(--background); color: var(--foreground); }
-.formPanel form p { font-size: 12px; color: var(--muted-foreground); margin: 9px 0; min-height: 16px; }
-.formPanel form p[role=alert] { color: var(--danger, #ee9c9c); }
-.notice { padding: 16px; border-radius: 10px; background: var(--muted); color: var(--muted-foreground); font-size: 12px; line-height: 1.8; }
-.back { font-size: 13px; display: inline-block; margin-top: 24px; text-decoration: underline; text-underline-offset: 4px; }
-@media (max-width: 900px) { .onboarding { grid-template-columns: 1fr; margin: 12px auto; max-width: 560px; } .intro, .formPanel { padding: 28px; } }
+.onboarding {
+  max-width: 1000px;
+  margin: 48px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--card);
+}
+.intro {
+  background: var(--soft-green, #202c22);
+  padding: 48px 36px;
+}
+.icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  display: grid;
+  place-items: center;
+  margin-bottom: 28px;
+}
+.intro h1 {
+  font-size: clamp(28px, 3vw, 40px);
+  letter-spacing: -1.5px;
+  line-height: 1.2;
+  margin: 14px 0 20px;
+}
+.intro > p:last-of-type {
+  color: var(--muted-foreground);
+  line-height: 1.8;
+}
+.intro ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+  margin: 32px 0 0;
+}
+.intro li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+}
+.intro li svg {
+  color: var(--primary);
+}
+.formPanel {
+  padding: 48px 36px;
+}
+.pill {
+  color: var(--primary);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  font-family: var(--font-geist-mono);
+}
+.formPanel h2 {
+  font-size: 26px;
+  letter-spacing: -0.8px;
+  margin: 16px 0 10px;
+}
+.formPanel > p {
+  color: var(--muted-foreground);
+  line-height: 1.7;
+}
+.formPanel form {
+  margin: 28px 0 22px;
+}
+.formPanel label {
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 10px;
+}
+.formPanel input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 0 14px;
+  background: var(--background);
+  color: var(--foreground);
+}
+.formPanel form p {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin: 9px 0;
+  min-height: 16px;
+}
+.formPanel form p[role="alert"] {
+  color: var(--danger, #ee9c9c);
+}
+.notice {
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.back {
+  font-size: 13px;
+  display: inline-block;
+  margin-top: 24px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 900px) {
+  .onboarding {
+    grid-template-columns: 1fr;
+    margin: 12px auto;
+    max-width: 560px;
+  }
+  .intro,
+  .formPanel {
+    padding: 28px;
+  }
+}

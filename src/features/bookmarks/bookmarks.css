@@ -1,4 +1,26 @@
-.save-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid transparent; background: transparent; min-width: 34px; min-height: 34px; border-radius: 7px; color: var(--muted-foreground); font-size: 12px; }
-.save-button:hover { background: var(--muted); color: var(--foreground); }
-.save-button[aria-pressed=true] { color: var(--primary); background: var(--soft-green, #202c22); }
-.save-error { font-size: 11px; color: var(--danger, #ee9c9c); line-height: 1.6; }
+.save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid transparent;
+  background: transparent;
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: 7px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.save-button:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+.save-button[aria-pressed="true"] {
+  color: var(--primary);
+  background: var(--soft-green, #202c22);
+}
+.save-error {
+  font-size: 11px;
+  color: var(--danger, #ee9c9c);
+  line-height: 1.6;
+}

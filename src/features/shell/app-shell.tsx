@@ -14,20 +14,76 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { learner } = useLearner();
   const [open, setOpen] = useState(false);
-  const section = pathname.startsWith("/labs") ? "Labs" : pathname.startsWith("/paths") ? "Learning paths" : pathname === "/leaderboard" ? "Leaderboard" : pathname === "/profile" ? "Profile" : pathname === "/signup" ? "Welcome" : pathname === "/guide" ? "Field guide" : pathname === "/saved" ? "Saved labs" : "Home";
-  return <div className={styles.shell}>
-    <a href="#main-content" className="skip-link">Skip to content</a>
-    <aside className={styles.sidebar}><Navigation /></aside>
-    <div className={styles.main}>
-      <header className={styles.topbar}>
-        <div className={styles.breadcrumb}>
-          <div className={styles.menu}><Sheet open={open} onOpenChange={setOpen} trigger={<Button variant="ghost" size="icon" aria-label="Open navigation"><Menu size={21} /></Button>}><Navigation onNavigate={() => setOpen(false)} /></Sheet></div>
-          <span>Learning workspace</span><ChevronRight size={13} /><strong>{section}</strong>
-        </div>
-        <div className={styles.tools}><span className={styles.demo}><span />Demo workspace</span><ThemeToggle />{!learner.signedIn && <Button asChild size="sm"><Link href="/signup">Get started</Link></Button>}</div>
-      </header>
-      <main id="main-content" tabIndex={-1} className={styles.content}>{children}</main>
-      <footer className={styles.footer}><span>CiscoKU Lab <span>·</span> Learn a little. Grow a lot.</span><Link href="/guide">Demo guide & information ↗</Link></footer>
+  const section = pathname.startsWith("/labs")
+    ? "Labs"
+    : pathname.startsWith("/paths")
+      ? "Learning paths"
+      : pathname === "/leaderboard"
+        ? "Leaderboard"
+        : pathname === "/profile"
+          ? "Profile"
+          : pathname === "/signup"
+            ? "Welcome"
+            : pathname === "/guide"
+              ? "Field guide"
+              : pathname === "/saved"
+                ? "Saved labs"
+                : "Home";
+  return (
+    <div className={styles.shell}>
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+      <aside className={styles.sidebar}>
+        <Navigation />
+      </aside>
+      <div className={styles.main}>
+        <header className={styles.topbar}>
+          <div className={styles.breadcrumb}>
+            <div className={styles.menu}>
+              <Sheet
+                open={open}
+                onOpenChange={setOpen}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Open navigation"
+                  >
+                    <Menu size={21} />
+                  </Button>
+                }
+              >
+                <Navigation onNavigate={() => setOpen(false)} />
+              </Sheet>
+            </div>
+            <span>Learning workspace</span>
+            <ChevronRight size={13} />
+            <strong>{section}</strong>
+          </div>
+          <div className={styles.tools}>
+            <span className={styles.demo}>
+              <span />
+              Demo workspace
+            </span>
+            <ThemeToggle />
+            {!learner.signedIn && (
+              <Button asChild size="sm">
+                <Link href="/signup">Get started</Link>
+              </Button>
+            )}
+          </div>
+        </header>
+        <main id="main-content" tabIndex={-1} className={styles.content}>
+          {children}
+        </main>
+        <footer className={styles.footer}>
+          <span>
+            CiscoKU Lab <span>·</span> Learn a little. Grow a lot.
+          </span>
+          <Link href="/guide">Demo guide & information ↗</Link>
+        </footer>
+      </div>
     </div>
-  </div>;
+  );
 }

@@ -115,8 +115,8 @@ export function Dashboard() {
               ))}
             </section>
           )}
-        <SkillProgress learner={learner} />
-        <section className={styles.explore}>
+          <SkillProgress learner={learner} />
+          <section className={styles.explore}>
             <div className={styles.sectionHeading}>
               <div>
                 <h2>Follow your curiosity</h2>

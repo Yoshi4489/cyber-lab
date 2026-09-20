@@ -24,7 +24,9 @@ test("catalog combines search, category and difficulty; empty state can recover"
   await page.getByRole("button", { name: "Reset filters" }).click();
   await expect(page.getByTestId("lab-card")).toHaveCount(12);
   await page.getByLabel("Sort labs").selectOption("shortest");
-  await expect(page.getByTestId("lab-card").first()).toContainText("First Steps in Linux");
+  await expect(page.getByTestId("lab-card").first()).toContainText(
+    "First Steps in Linux",
+  );
   expect(errors).toEqual([]);
 });
 
@@ -63,9 +65,10 @@ test("catalog links lead to briefings with a demo entry point", async ({
   await expect(
     page.getByRole("heading", { name: "What you’ll learn" }),
   ).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "Start Lab" }),
-  ).toHaveAttribute("href", "/signup?lab=cookie-monster");
+  await expect(page.getByRole("link", { name: "Start Lab" })).toHaveAttribute(
+    "href",
+    "/signup?lab=cookie-monster",
+  );
   await page
     .getByRole("button", { name: "Save Cookie Monster", exact: true })
     .click();
@@ -99,9 +102,15 @@ test("navigation and layout work at the current viewport", async ({
     await expect(menu).toBeFocused();
   } else {
     await page.getByRole("button", { name: "List view" }).click();
-    await expect(page.getByTestId("lab-grid")).toHaveAttribute("data-layout", "list");
+    await expect(page.getByTestId("lab-grid")).toHaveAttribute(
+      "data-layout",
+      "list",
+    );
     await page.getByRole("button", { name: "Grid view" }).click();
-    await expect(page.getByTestId("lab-grid")).toHaveAttribute("data-layout", "grid");
+    await expect(page.getByTestId("lab-grid")).toHaveAttribute(
+      "data-layout",
+      "grid",
+    );
     await page
       .getByRole("navigation", { name: "Main navigation" })
       .getByRole("link", { name: "Learning paths" })
@@ -123,7 +132,11 @@ test("connection check reaches the backend through the server adapter", async ({
 }) => {
   await request.post("http://127.0.0.1:4101/scenario/healthy");
   await page.goto("/guide");
-  await page.getByText("Maintainer tools: optional backend connection check", { exact: true }).click();
+  await page
+    .getByText("Maintainer tools: optional backend connection check", {
+      exact: true,
+    })
+    .click();
   await page.getByRole("button", { name: "Check connection" }).click();
   await expect(page.getByRole("status")).toContainText(
     "The backend API is reachable",

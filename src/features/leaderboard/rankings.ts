@@ -1,6 +1,12 @@
 import { levelFor, totalXp, type Learner } from "@/features/learner/model";
 
-type Entry = { id: string; name: string; xp: number; completed: number; current: boolean };
+type Entry = {
+  id: string;
+  name: string;
+  xp: number;
+  completed: number;
+  current: boolean;
+};
 const samples: Entry[] = [
   { id: "owl", name: "pixel_owl", xp: 1250, completed: 7, current: false },
   { id: "fern", name: "curious_fern", xp: 1000, completed: 6, current: false },
@@ -15,11 +21,19 @@ const samples: Entry[] = [
 export function rankings(learner: Learner) {
   const entries = [...samples];
   if (learner.signedIn && learner.username) {
-    entries.push({ id: "current-demo", name: learner.username, xp: totalXp(learner), completed: Object.keys(learner.completions).length, current: true });
+    entries.push({
+      id: "current-demo",
+      name: learner.username,
+      xp: totalXp(learner),
+      completed: Object.keys(learner.completions).length,
+      current: true,
+    });
   }
-  return entries.sort((a, b) => b.xp - a.xp || a.id.localeCompare(b.id)).map(entry => ({
-    ...entry,
-    rank: 1 + entries.filter(other => other.xp > entry.xp).length,
-    level: levelFor(entry.xp),
-  }));
+  return entries
+    .sort((a, b) => b.xp - a.xp || a.id.localeCompare(b.id))
+    .map((entry) => ({
+      ...entry,
+      rank: 1 + entries.filter((other) => other.xp > entry.xp).length,
+      level: levelFor(entry.xp),
+    }));
 }

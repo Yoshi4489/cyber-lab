@@ -11,7 +11,9 @@ export default function LabsPage() {
         <div>
           <p className="eyebrow">A LITTLE CURIOSITY GOES A LONG WAY</p>
           <h1>Find your next discovery.</h1>
-          <p>Explore 12 sample labs, at your own pace. Every session is a demo.</p>
+          <p>
+            Explore 12 sample labs, at your own pace. Every session is a demo.
+          </p>
         </div>
       </div>
       <Catalog labs={labs} />

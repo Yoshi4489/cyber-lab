@@ -78,5 +78,14 @@
   bottom: 47px;
   left: 43px;
 }
-@media (max-width: 1250px) { .art { right: 20px; } }
-@media (max-width: 760px) { .art { opacity: .35; right: -65px; } }
+@media (max-width: 1250px) {
+  .art {
+    right: 20px;
+  }
+}
+@media (max-width: 760px) {
+  .art {
+    opacity: 0.35;
+    right: -65px;
+  }
+}
