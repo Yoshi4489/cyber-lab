@@ -23,6 +23,62 @@ work in the separate [backend repository](../cyber-range-backend).
 No payments are planned. Public account registration remains closed until the
 security launch gates are complete.
 
+## Project tracking
+
+Current status: the frontend Phase 1 UX/UI mockup is complete and ready for
+review. This repository is currently in a frontend handoff state; the live
+backend and lab execution system are not connected.
+
+### Done
+
+- [x] Established the CiscoKU Lab visual direction and responsive frontend shell.
+- [x] Added the public landing page, catalog, search, filters, sorting, bookmarks,
+  and lab briefings.
+- [x] Added browser-only demo onboarding, learner progress, dashboard, XP, levels,
+  badges, streaks, topic progress, and fictional leaderboard data.
+- [x] Added the simulated lab lifecycle: start, timer, stop, finish, expiry, and
+  replay without creating a real target.
+- [x] Added preview pages for future Learning Paths and Profile areas.
+- [x] Split the frontend into feature folders with thin App Router entry points.
+- [x] Updated the canonical project documentation and frontend security boundary.
+- [x] Added CI and verified lint, typecheck, build, and 54 Playwright scenarios
+  across desktop, tablet, and mobile layouts.
+- [x] Pushed the work to the `develop` branch of the frontend repository in
+  small logical commits.
+
+### Currently working
+
+- [ ] Review the Phase 1 mockup and record any UX changes before backend
+  integration begins.
+- [ ] Keep the frontend demo stable while the separate backend design and API
+  contract are prepared.
+
+### Planned next
+
+- [ ] Define the shared API contract between this frontend and
+  `../cyber-range-backend`.
+- [ ] Add real authentication and protected user accounts after the required
+  security controls are complete.
+- [ ] Replace browser-only demo progress with backend-backed learner progress.
+- [ ] Connect the catalog and lab session screens to live backend data.
+- [ ] Implement secure lab instance creation, ownership checks, status updates,
+  expiry, and destruction through the backend.
+
+### Still left for the full platform
+
+- [ ] Challenge authoring, runtime flag injection, submissions, scoring, and
+  production leaderboard data.
+- [ ] Database persistence, capacity limits, rate limits, cleanup workers, and
+  monitoring.
+- [ ] Target isolation: separate control plane, default-deny egress, private
+  network protection, resource caps, short TTLs, and disposable hosts.
+- [ ] Complete Learning Paths, Profile, community, teams, and certificates.
+- [ ] Production deployment, domains, environment configuration, accessibility
+  review, security review, and launch approval.
+
+The browser demo remains usable while this work is pending. Do not describe its
+sample XP, progress, leaderboard, or lab sessions as real platform data.
+
 ## Run locally
 
 Use Node.js 22 or newer; CI uses Node 24.
