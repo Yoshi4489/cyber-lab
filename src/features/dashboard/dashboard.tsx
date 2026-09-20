@@ -18,6 +18,7 @@ import { useLearner } from "@/features/learner/store";
 import { useClock } from "@/hooks/use-clock";
 import { LearningArt } from "./learning-art";
 import { ProgressOverview } from "./progress-overview";
+import { SkillProgress } from "./skill-progress";
 import styles from "./dashboard.module.css";
 
 export function Dashboard() {
@@ -114,7 +115,8 @@ export function Dashboard() {
               ))}
             </section>
           )}
-          <section className={styles.explore}>
+        <SkillProgress learner={learner} />
+        <section className={styles.explore}>
             <div className={styles.sectionHeading}>
               <div>
                 <h2>Follow your curiosity</h2>

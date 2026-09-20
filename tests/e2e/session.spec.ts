@@ -38,6 +38,7 @@ test("guest can start a demo, finish, and replay without duplicate XP", async ({
   await expect(
     page.getByRole("progressbar", { name: "Progress to next level" }),
   ).toHaveAttribute("value", "100");
+  await expect(page.getByRole("progressbar", { name: "Web security progress", exact: true })).toHaveAttribute("value", "1");
   await expect(
     page.getByText("Today's goal complete", { exact: true }),
   ).toBeVisible();

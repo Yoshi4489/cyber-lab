@@ -1,3 +1,8 @@
+.skills { display: grid; gap: 20px; margin-top: 24px; }
+.skills > div { display: flex; align-items: center; gap: 14px; font-size: 12px; }
+.skills span { width: 110px; flex-shrink: 0; }
+.skills progress { flex: 1; min-width: 25px; }
+.skills small { font-family: var(--font-geist-mono); font-size: 10px; color: var(--muted-foreground); }
 .dashboard {
   display: grid;
   gap: 28px;
