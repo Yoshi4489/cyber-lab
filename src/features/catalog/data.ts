@@ -61,10 +61,3 @@ export const labs: Lab[] = [
 export function getLab(slug: string) {
   return labs.find((lab) => lab.slug === slug);
 }
-
-// Retained until the legacy learning-path routes become preview destinations.
-export const learningPaths = [
-  { slug: "web-security", title: "Web security foundations", label: "START HERE", description: "Explore the web security sample collection.", icon: "web", labSlugs: ["cookie-monster", "ghost-in-the-shell", "access-denied"] },
-  { slug: "digital-detective", title: "The digital detective", label: "FOLLOW THE EVIDENCE", description: "Explore the forensics and networking sample collection.", icon: "search", labSlugs: ["hidden-in-plain-sight", "packet-trail"] },
-  { slug: "code-breaker", title: "Think like a codebreaker", label: "FIND THE PATTERN", description: "Explore the cryptography sample collection.", icon: "key", labSlugs: ["cipher-zero"] },
-] as const;

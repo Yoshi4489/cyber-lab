@@ -7,7 +7,7 @@ import {
   XP_PER_LEVEL,
   type Learner,
 } from "@/features/learner/model";
-import styles from "./dashboard.module.css";
+import styles from "./progress-overview.module.css";
 
 export function ProgressOverview({
   learner,

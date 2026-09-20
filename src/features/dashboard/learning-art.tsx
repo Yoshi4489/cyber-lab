@@ -1,5 +1,5 @@
 import { Code2, Fingerprint, Sparkles, Terminal } from "lucide-react";
-import styles from "./dashboard.module.css";
+import styles from "./learning-art.module.css";
 
 export function LearningArt() {
   return (

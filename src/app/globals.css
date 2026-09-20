@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
-@import "../styles/legacy-pages.css";
+@import "../styles/states.css";
 @import "../styles/primitives.css";
 @import "../features/bookmarks/bookmarks.css";
 @import "../features/backend/backend.css";
