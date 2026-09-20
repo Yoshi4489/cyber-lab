@@ -1,131 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Compass,
-  Flag,
-  FlaskConical,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, Bookmark, FlaskConical, Sparkles, UserRound } from "lucide-react";
 import { BackendStatus } from "@/features/backend/backend-status";
-import { Button } from "@/components/ui/button";
+import { DemoControls } from "@/features/guide/demo-controls";
+import styles from "@/features/guide/guide.module.css";
 
-export const metadata: Metadata = { title: "Field guide" };
-
+export const metadata: Metadata = { title: "Demo guide" };
 export default function GuidePage() {
-  return (
-    <>
-      <div className="page-heading">
-        <div>
-          <p className="eyebrow">A FEW THINGS BEFORE YOU DIVE IN.</p>
-          <h1>
-            Your field guide<span className="accent">.</span>
-          </h1>
-          <p>
-            A good place to start, whether this is your first lab or your
-            fiftieth.
-          </p>
-        </div>
-      </div>
-      <div className="guide-layout">
-        <div>
-          <section className="guide-section">
-            <h2>Learn by asking “what if?”</h2>
-            <p>
-              Cyber Range is a hands-on security training platform. Each
-              challenge is a small investigation: explore an unfamiliar system,
-              understand its weaknesses, and explain what you found.
-            </p>
-            <div className="guide-step">
-              <Compass size={21} />
-              <div>
-                <h3>01. Find something interesting</h3>
-                <p>
-                  Browse by category, skill, or difficulty. Open a briefing to
-                  see the story, learning objectives, and prerequisites. Save
-                  the ones you want to return to.
-                </p>
-              </div>
-            </div>
-            <div className="guide-step">
-              <FlaskConical size={21} />
-              <div>
-                <h3>02. Explore your own lab</h3>
-                <p>
-                  Once the live range opens, supported challenges will launch a
-                  private target with a limited lifetime. Only attack the target
-                  assigned to you.
-                </p>
-              </div>
-            </div>
-            <div className="guide-step">
-              <Flag size={21} />
-              <div>
-                <h3>03. Capture the lesson</h3>
-                <p>
-                  Live challenges will let you submit a flag as evidence of a
-                  solve. The real takeaway is understanding the weakness and how
-                  to prevent it.
-                </p>
-              </div>
-            </div>
-          </section>
-          <section className="guide-section" id="ground-rules">
-            <h2>Curiosity, with a clear boundary.</h2>
-            <p>
-              Targets are intentionally vulnerable. The platform, other players,
-              and systems outside your assigned lab are outside the exercise.
-            </p>
-            <ul className="ground-rules">
-              <li>
-                Practice only against targets you have explicit permission to
-                test.
-              </li>
-              <li>
-                Keep discoveries about the hosting platform private and report
-                them to the operator.
-              </li>
-              <li>Do not use a lab to scan or attack external systems.</li>
-              <li>
-                Share what you learned without sharing other players’ private
-                data.
-              </li>
-            </ul>
-          </section>
-          <section className="guide-section">
-            <h2>What works in this preview?</h2>
-            <p>
-              You can explore six example briefings, filter the catalog, follow
-              three learning paths, and save labs in this browser. Bookmarks are
-              local to this device and are not an account.
-            </p>
-            <p>
-              Registration, runnable targets, challenge downloads, flag
-              submission, and scoring are still being built. Planned points and
-              durations describe the intended labs.
-            </p>
-            <Button asChild>
-              <Link href="/">
-                Find your next challenge <ArrowRight size={16} />
-              </Link>
-            </Button>
-          </section>
-        </div>
-        <aside>
-          <div className="guide-aside">
-            <ShieldCheck size={26} />
-            <h3>Your curiosity belongs here.</h3>
-            <p>
-              Start small. Read the briefing. Take notes. Getting stuck is part
-              of learning, and understanding one thing well is progress.
-            </p>
-            <Link href="/paths" className="text-link">
-              Try a learning path <ArrowRight size={14} />
-            </Link>
-          </div>
-        </aside>
-      </div>
-      <BackendStatus />
-    </>
-  );
+  return <div className={styles.page}>
+    <header><p className="eyebrow">MAKE YOURSELF AT HOME</p><h1>A little guidance goes a long way.</h1><p>Everything you need to know about the CiscoKU Lab demo.</p></header>
+    <div className={styles.grid}>
+      <section><UserRound size={24} /><h2>Start with a username.</h2><p>Browse freely as a guest. Choose a demo username to try a session and see your dashboard. This creates a local demo profile, not a real account. Returning with the same username keeps your progress; a different username starts fresh.</p></section>
+      <section><FlaskConical size={24} /><h2>Try a simulated session.</h2><p>Start Lab opens a timer and instance status panel. No server or target is created. You can stop, resume, or finish the demo. The countdown keeps its original end time after refresh.</p></section>
+      <section><Sparkles size={24} /><h2>Watch small wins add up.</h2><p>Finish Lab simulates completion. Each sample lab awards XP once. Every 500 demo XP adds a level. One completion meets the daily goal; consecutive learning days build a streak. Leaderboard classmates are fictional.</p></section>
+      <section><Bookmark size={24} /><h2>Keep your next step close.</h2><p>Bookmark a lab to find it again in Saved labs. Demo progress, bookmarks, and theme preferences stay in this browser. They do not sync to another device.</p></section>
+    </div>
+    <section className={styles.panel} id="ground-rules"><h2>A friendly space for learning.</h2><p>CiscoKU Lab is a free university learning project. This preview demonstrates the website experience; challenge content and real lab access are planned for a later phase. There are no payments. Real targets will require the platform’s security launch checks.</p><Link href="/labs">Find a sample lab <ArrowRight size={15} /></Link></section>
+    <section className={styles.panel}><DemoControls /></section>
+    <details className={styles.details}><summary>Maintainer tools: optional backend connection check</summary><p>This diagnostic checks API availability only. It does not start labs or enable real accounts.</p><BackendStatus /></details>
+  </div>;
 }

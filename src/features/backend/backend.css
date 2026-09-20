@@ -1,0 +1,8 @@
+.connection-panel { display: flex; align-items: flex-start; gap: 15px; padding: 24px; border: 1px solid var(--border); border-radius: 13px; background: var(--card); margin-top: 20px; }
+.connection-panel > svg { color: var(--primary); }
+.connection-panel > div { flex: 1; min-width: 0; }
+.connection-panel h3 { font-size: 14px; margin-bottom: 8px; }
+.connection-panel p { font-size: 12px; color: var(--muted-foreground); line-height: 1.8; }
+.spin { animation: turn 1s linear infinite; }
+@keyframes turn { to { transform: rotate(360deg); } }
+@media (max-width: 650px) { .connection-panel { flex-wrap: wrap; padding: 18px; } .connection-panel > div { flex-basis: 70%; } }

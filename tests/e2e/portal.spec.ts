@@ -123,6 +123,7 @@ test("connection check reaches the backend through the server adapter", async ({
 }) => {
   await request.post("http://127.0.0.1:4101/scenario/healthy");
   await page.goto("/guide");
+  await page.getByText("Maintainer tools: optional backend connection check", { exact: true }).click();
   await page.getByRole("button", { name: "Check connection" }).click();
   await expect(page.getByRole("status")).toContainText(
     "The backend API is reachable",

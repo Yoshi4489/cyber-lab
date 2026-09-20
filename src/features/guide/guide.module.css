@@ -1,0 +1,16 @@
+.page { max-width: 900px; margin: 0 auto; }
+.page header { margin-bottom: 30px; }
+.page h1 { font-size: clamp(29px, 3vw, 38px); letter-spacing: -1.3px; margin: 12px 0; }
+.page header > p:last-child { color: var(--muted-foreground); line-height: 1.8; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-bottom: 28px; }
+.grid section, .panel { padding: 25px; border: 1px solid var(--border); border-radius: 15px; background: var(--card); }
+.grid svg { color: var(--primary); margin-bottom: 16px; }
+.page h2 { font-size: 18px; letter-spacing: -.4px; margin-bottom: 12px; }
+.grid p, .panel p { color: var(--muted-foreground); font-size: 13px; line-height: 1.9; }
+.panel { margin-bottom: 24px; }
+.panel button { margin: 16px 10px 0 0; }
+.panel > a { display: inline-flex; gap: 8px; align-items: center; color: var(--primary); font-size: 13px; margin-top: 16px; }
+.details { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 22px; }
+.details summary { color: var(--muted-foreground); font-size: 12px; cursor: pointer; }
+.details > p { color: var(--muted-foreground); font-size: 12px; line-height: 1.8; margin: 16px 0; }
+@media (max-width: 650px) { .grid { grid-template-columns: 1fr; } }
