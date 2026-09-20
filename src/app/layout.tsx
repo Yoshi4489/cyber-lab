@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { AppShell } from "@/features/shell/app-shell";
+import { themeScript } from "@/features/theme/theme-init";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Explore labs · Cyber Range",
-    template: "%s · Cyber Range",
+    default: "CiscoKU Lab · Learn. Explore. Grow.",
+    template: "%s · CiscoKU Lab",
   },
   description:
     "A space for curious minds. Explore hands-on cybersecurity challenges, build your skills, and learn by doing.",
@@ -20,8 +21,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
+      <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
       <body>
         <AppShell>{children}</AppShell>
       </body>
