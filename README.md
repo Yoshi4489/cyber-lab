@@ -1,106 +1,115 @@
-# Cyber Range — frontend
+# CiscoKU Lab — frontend
 
-A hands-on security training platform. Users browse deliberately vulnerable
-challenges, start a private target on demand, attack it through a browser or
-VPN, and submit a flag for points.
+A free university security learning website, designed for curious learners.
+The current delivery is a clickable UX mockup with sample data.
 
-## Status
+## What works
 
-The Next.js frontend preview is runnable. The independent backend lives in
-[`../cyber-range-backend`](../cyber-range-backend). This repo owns the website;
-the backend owns application data, scoring, and lab lifecycle.
+- Guest home and public catalog with 12 sample entries across web security,
+  Linux, networking, cryptography, and forensics.
+- Search, combined topic/difficulty filters, sorting, grid/list views, bookmarks,
+  and public lab briefings.
+- Username-only demo onboarding, a personal dashboard, XP, levels, badges,
+  streaks, daily goals, and progress by topic.
+- Simulated sessions with an absolute expiry timer, stop, finish, and replay.
+  Each sample lab awards demo XP once.
+- Fictional global leaderboard; clearly marked Learning Paths/Profile previews.
+- System, light, and dark themes; desktop and tablet layouts; mobile fallback;
+  reduced-motion support and keyboard navigation.
 
-Working: six preview lab briefings, search, category and difficulty filters,
-sorting, grid/list layouts, browser bookmarks, three learning paths, responsive
-navigation, a field guide, and an optional backend health check.
+**No real account or lab is created.** Demo progress lives in this browser.
+Real authentication, content, scoring, capacity, and isolated targets are future
+work in the separate [backend repository](../cyber-range-backend).
+No payments are planned. Public account registration remains closed until the
+security launch gates are complete.
 
-**Registration, live targets, downloads, flag submission, and scoring are still
-being built.** Sample content is labeled in the UI. Bookmarks are local browser
-preferences, not an account. Public signup stays closed until the security
-launch gates are complete.
+## Run locally
 
-## Canonical documentation
-
-The project keeps system decisions in a small set of root documents. The
-component folders do not contain duplicate README files.
-
-| Document | Purpose |
-|---|---|
-| `AGENTS.md` | Context, security rules, and working conventions. |
-| `PLAN.md` | Researched stack, data model, phases, and capacity plan. |
-| `ARCHITECTURE.md` | Trust zones, deployment boundaries, lifecycle, and API. |
-| `SECURITY.md` | Threat model and required launch controls. |
-| `docs/challenge-authoring.md` | Challenge manifest and author workflow. |
-| `docs/adr/` | Decisions that should not be repeatedly revisited. |
-
-## Repo map
-
-```
-cyber-range/
-├── AGENTS.md
-├── README.md
-├── PLAN.md
-├── ARCHITECTURE.md
-├── SECURITY.md
-├── docs/
-│   ├── challenge-authoring.md
-│   └── adr/
-├── src/
-│   ├── app/                 App Router pages and status API route
-│   ├── components/          Portal UI and reusable primitives
-│   ├── hooks/               Browser bookmark state
-│   └── lib/                 Preview content and server-only backend adapter
-├── tests/                   Browser tests and isolated backend fixture
-└── challenges/              Existing challenge design examples
-```
-
-The empty `apps/`, `packages/`, and `infra/` directories are remnants of the
-original monorepo plan. The runnable frontend is at this repository root.
-
-## The security boundary
-
-Users are attackers by design and are expected to gain full control of their
-target. The important question is what they can reach after that happens.
-
-1. The control plane never runs on the same host as a target.
-2. Targets have default-deny egress, no private-network reachability, hard
-   resource caps, short TTLs, and disposable hosts.
-
-See `SECURITY.md` for the complete threat model.
-
-## Why a separate orchestrator
-
-Vercel cannot run Docker, and serverless functions are not the right place for
-durable instance timers. The orchestrator is a small always-on Node service on
-a VPS. It owns container lifecycle and talks to lab nodes over authenticated
-Docker Engine API connections. The web app never receives Docker access.
-
-## Quick start
-
-Use Node.js 22 or newer (Node 24 is the development baseline).
+Use Node.js 22 or newer; CI uses Node 24.
 
 ```powershell
 npm ci
 npm run dev
 ```
 
-Open **http://127.0.0.1:3000**. No database, account, or backend is needed to
-browse the preview. Fonts and illustrations are served locally.
+Open **http://127.0.0.1:3000**. Fonts and artwork are local. No backend or
+database is required. Choose **Join the demo**, enter a fictional username,
+then view a sample lab and select **Start Lab** and **Finish Lab**.
 
-To check a running backend from the field guide, copy `.env.example` to
-`.env.local`, set `BACKEND_URL`, and restart the frontend. The Next.js server
-calls `/healthz`; the browser receives only a status. API liveness does not
-mean lab spawning is available.
+A production preview can run with `npm run build` followed by `npm start`.
+Vercel is the chosen preview hosting target. This change does not provision or
+publish a Vercel project.
 
-| Command | Purpose |
+### Demo state
+
+| Storage key | Purpose |
 |---|---|
-| `npm run dev` | Local development on port 3000. |
-| `npm run build` | Production build with TypeScript checks. |
-| `npm start` | Serve the production build. |
-| `npm run lint` | ESLint and React rules. |
-| `npm run typecheck` | Generate route types and check TypeScript. |
-| `npm run test:e2e` | Desktop/mobile browser tests; run a build first. |
+| `ciscoku:learner:v1` | Demo username, sign-in state, unique completions, session timestamps |
+| `cyber-range:saved-labs:v1` | Existing browser bookmarks, preserved across the redesign |
+| `ciscoku:theme` | System/light/dark preference |
 
-On a fresh machine, run `npx playwright install chromium` before browser tests.
-Tests start a local production frontend on port 3100 and a test backend on
-4101. They do not connect to your configured backend or launch targets.
+XP and levels are derived from catalog fixtures and unique completions. These
+are illustrative reward rules, not production scoring policy. The same username
+resumes local progress; entering a different username starts a fresh demo.
+Sign out does not clear progress. The **Demo guide** includes an explicit reset.
+If storage is blocked, the current tab remains usable with a warning; refreshing
+can lose that temporary state. No demo value grants server access.
+
+## Repository map
+
+| Path | Responsibility |
+|---|---|
+| `src/app/` | Thin App Router entry points, metadata, HTTP status route |
+| `src/features/shell/`, `theme/` | Shared navigation, temporary identity, theme controls |
+| `src/features/catalog/`, `briefing/`, `bookmarks/` | Sample metadata, discovery, public briefings, saved labs |
+| `src/features/learner/` | Validated demo state and onboarding |
+| `src/features/dashboard/`, `session/`, `leaderboard/` | Progress, simulated lifecycle, fictional rankings |
+| `src/features/landing/`, `preview/`, `guide/` | Guest entry, future-page previews, demo help |
+| `src/features/backend/` | Optional server-only health adapter and maintainer UI |
+| `src/components/ui/`, `src/styles/` | Small shared primitives, theme tokens, loading states |
+| `tests/e2e/`, `tests/fixtures/` | Browser flows and loopback-only backend fixture |
+| `.github/workflows/frontend.yml` | Lint, types, build, and browser checks on main/develop pushes |
+
+Keep components and styles beside their feature. Reusable UI belongs in
+`components/ui`; global CSS is limited to shared tokens and primitives.
+The empty legacy monorepo directories are not application roots.
+`challenges/` contains earlier authoring examples; this UX phase adds no
+challenge internals.
+
+## Checks and delivery
+
+```powershell
+npm run lint
+npm run typecheck
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
+
+Playwright runs Chrome desktop, tablet, and mobile scenarios. It starts local
+test services on ports 3100 and 4101. It never starts real targets or contacts
+your configured backend. CI runs the same gates and uploads failure reports.
+
+Push one logical group, wait for its CI result, then continue. Keep refactors,
+formatting, dependency changes, and features in separate commits.
+See `AGENTS.md` for commit conventions.
+
+The optional maintainer check is under **Demo guide → Maintainer tools**.
+Set `BACKEND_URL` using the existing environment example if needed. The
+server checks only `/healthz`; API availability does not enable lab execution.
+
+## Canonical documentation
+
+| Document | Purpose |
+|---|---|
+| [AGENTS.md](AGENTS.md) | Repository context, security boundaries, working rules |
+| [PLAN.md](PLAN.md) | Confirmed UX decisions, UI roadmap, future platform phases |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Trust boundaries, demo state, future lifecycle and API |
+| [SECURITY.md](SECURITY.md) | Threat model and required launch gates |
+| [Challenge authoring](docs/challenge-authoring.md) | Future challenge manifests and author workflow |
+| [Decision records](docs/adr/) | Long-lived architecture choices |
+
+The control plane must never share a host with vulnerable targets. Future
+targets require default-deny egress, private-network isolation, resource caps,
+short lifetimes, and disposable hosts. Those controls belong to the backend
+and lab infrastructure.

@@ -9,9 +9,10 @@ A hands-on security training platform. Users browse a catalog of deliberately
 vulnerable challenges, spawn a private isolated target on demand, attack it,
 and submit a flag to score points. Comparable to HackTheBox or TryHackMe.
 
-Status: the frontend preview is implemented at the repository root using
-Next.js App Router. Phase 1 is in progress; auth, live data, scoring, and lab
-spawning remain unfinished. Read `PLAN.md` for the exact boundary.
+Status: the CiscoKU Lab UX mockup is implemented at the repository root using
+Next.js App Router. It includes browser-local demo onboarding, progression, and
+simulated sessions. Real auth, live data, scoring, and spawning remain unfinished.
+Read the UX section of `PLAN.md` before the future platform phases.
 
 This is the **frontend repository**. The independent backend is in the sibling
 `../cyber-range-backend` repository. Do not add an orchestrator, Docker access,
@@ -45,9 +46,10 @@ anything in `apps/orchestrator` or `infra/`.
 | Path | What it is | Trust |
 |---|---|---|
 | `src/app` | Next.js pages and server route handlers. | Trusted, unprivileged |
-| `src/components` | Portal UI and reusable UI primitives. | Browser / unprivileged |
-| `src/lib/catalog.ts` | Typed editorial preview data. | Public sample content |
-| `src/lib/backend.ts` | Server-only HTTP adapter. | Trusted, unprivileged |
+| `src/features` | Feature-owned UI, state, fixtures, and scoped styles. | Browser / unprivileged, except server-only adapter |
+| `src/components/ui` | Reusable UI primitives. | Browser / unprivileged |
+| `src/features/catalog/data.ts` | Typed editorial preview data. | Public sample content |
+| `src/features/backend/adapter.ts` | Server-only HTTP adapter. | Trusted, unprivileged |
 | `tests/` | Browser flows and loopback-only backend fixture. | Development only |
 | `../cyber-range-backend` | Separate API, persistence, and lifecycle repo. | Trusted; worker privileged |
 | `challenges/` | Challenge-as-code. One folder each. | Hostile by design |
@@ -68,9 +70,14 @@ fonts, shadcn-style source components with Radix primitives, and Playwright.
 Better Auth and live data integration are planned. Fastify, BullMQ on Redis,
 Dockerode, and Traefik belong to the separate backend and lab infrastructure.
 
+Keep route files thin. Place components, state, and CSS modules with their feature.
+Shared tokens and primitives belong in `src/styles`; avoid another global stylesheet
+that holds every feature. Demo state never authorizes backend operations.
+
 Run `npm run lint`, `npm run typecheck`, and `npm run build` for frontend
 changes. For navigation, filtering, storage, or API boundary changes, also run
-`npm run test:e2e` after building. Never present preview data as live targets,
+`npm run test:e2e` after building. CI runs these gates for each pushed group on
+`main` and `develop`; wait for its result before pushing the next group. Never present preview data as live targets,
 real points, or authenticated user progress.
 
 ## Documents

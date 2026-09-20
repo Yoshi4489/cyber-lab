@@ -1,4 +1,4 @@
-# Development Plan: Cyber Range
+# Development Plan: CiscoKU Lab
 
 ## CiscoKU Lab: approved UX implementation (September 2026)
 
@@ -134,21 +134,23 @@ This is the standalone frontend, with `src/app` at its root. API, persistence,
 and orchestration belong to `../cyber-range-backend`. The phases below describe
 the whole platform, including planned work.
 
-Completed: Next.js / React / TypeScript / Tailwind foundation, reusable UI
-primitives, six sample lab briefings, combined search and filters, sorting,
-grid/list views, browser bookmarks, three preview learning paths, responsive
-navigation, field guide, and a server-only backend health check. Fonts and SVG
-artwork ship locally. Playwright covers desktop/mobile navigation, catalog
-interactions, bookmark persistence, and the HTTP status boundary.
+Completed UX delivery: CiscoKU Lab identity; guest landing; 12 sample lab
+briefings; search, category/difficulty filters, sorting, grid/list views, and
+bookmarks; demo username entry; dashboard with XP, levels, milestones, streak,
+daily goal, and topic progress; simulated start/stop/expiry/finish/replay; fictional
+global leaderboard; clear Learning Paths/Profile previews; system/light/dark
+themes; desktop/tablet layouts; demo guide and explicit local reset.
 
-Next: establish the catalog response contract in the backend; replace sample
-data with validated responses and loading/error states; implement session
-authentication and verification; then add authorized instance operations and
-flag submissions. Never infer backend readiness from `/healthz` alone.
+All demo state remains in the browser. No real account, target, flag verification,
+or backend scoring exists. The optional backend health check is still server-only
+and does not enable labs. All 54 browser cases passed across desktop, tablet, and
+mobile during UX verification, together with lint, type checks, and a production
+build. Feature groups are pushed separately with GitHub CI between them.
 
-The frontend has no account creation, flag verification, targets, attachments,
-leaderboard, or real progress tracking. Points and durations describe planned
-content. Local bookmarks carry no authorization authority.
+Next platform work is the versioned catalog contract, validated live responses,
+server authentication and email verification, then authorized lifecycle commands.
+These are future platform phases, not unfinished mockup interactions. Never
+infer backend readiness from `/healthz` alone.
 
 ## 1. Technical Architecture & Stack
 
@@ -158,7 +160,7 @@ Three deployables, because one of them has to talk to Docker and Vercel cannot.
 
 * **Framework:** Next.js 16 App Router with TypeScript. Same as
   financial-dashboard, so the patterns carry over.
-* **UI:** Tailwind CSS with shadcn/ui. Dark-first theme for this one.
+* **UI:** Tailwind CSS with shadcn/ui. System/light/dark themes for this frontend.
 * **Auth:** Better Auth, with email verification required before a user may
   spawn anything. Unverified accounts can browse but not consume compute.
 * **Forms & validation:** React Hook Form with Zod.

@@ -11,13 +11,13 @@ Browser -> Next.js portal -> Backend HTTP API -> Database / lifecycle queue
                                Privileged worker -> mTLS -> Disposable lab nodes
 ```
 
-Pages render typed sample content from `src/lib/catalog.ts`. Search, filters,
+Pages render typed sample content from `src/features/catalog/data.ts`. Search, filters,
 sorting, and layout run in the catalog client component. Saved slugs use
 `cyber-range:saved-labs:v1` in local storage; preferences never establish user
 identity. Route shells and briefings use Server Components; interaction and
 browser storage components opt into the client boundary.
 
-`GET /api/backend-status` calls the server-only adapter in `src/lib/backend.ts`.
+`GET /api/backend-status` calls the server-only adapter in `src/features/backend/adapter.ts`.
 It requests the fixed `/healthz` path at `BACKEND_URL`, validates the response
 with Zod, rejects redirects, and times out after three seconds. It returns only
 `{ status: "not-configured" | "reachable" | "unavailable" }`, with no cache.
@@ -28,6 +28,33 @@ session, or target readiness.
 The field guide checks on demand. The frontend still shows preview content
 even if the API is reachable. The backend's `/v1/challenges` is a scaffold;
 production catalog compatibility is not claimed.
+
+### Browser-only demo state
+
+The CiscoKU Lab mockup is a separate presentation flow:
+`Browser → validated local state → simulated session/progress UI`.
+No demo action calls the lifecycle API. Username entry is not authentication.
+
+`src/features/learner` owns a Zod-validated, versioned local store under
+`ciscoku:learner:v1`. It records a demo username, sign-in state, unique lab
+completion timestamps, and per-lab session timestamps. XP, levels, badges, and
+topic progress are derived; stored totals are not trusted. Timers use absolute
+expiry times. Expired sessions cannot be completed, and replaying a completed
+lab cannot award more XP. Multiple entries may have their own simulated session.
+
+Components subscribe to storage changes. Invalid stored data resets to an empty
+demo state. If writes fail, changes remain usable in memory for the current tab
+and the interface warns that refresh can lose progress. Sign out preserves
+progress; choosing a different username replaces it. The guide exposes a
+confirmed reset. None of these values grants access to backend resources.
+
+The leaderboard combines fictional fixtures with the local demo learner.
+Learning Paths and Profile are preview destinations. Sample briefings contain
+metadata only; real learning content and challenge internals remain deferred.
+
+Theme tokens in `src/styles/tokens.css` follow the system preference by default.
+A local `ciscoku:theme` override is applied before paint. Route entry points
+stay in `src/app`; feature components and styles stay under `src/features`.
 
 ### Connecting the next features
 
@@ -41,8 +68,8 @@ production catalog compatibility is not claimed.
    scoped service token with identity in `sub`. Keep the signing secret outside
    browser bundles. The backend verifies identity, scope, ownership, and quotas.
 4. Send lifecycle and submission commands through server handlers/actions.
-   Browser-supplied user IDs are not authority. Launch stays disabled until
-   the full authorized path exists.
+   Browser-supplied user IDs are not authority. Real launching stays disabled until
+   the full authorized path exists; the current Start Lab action is UI simulation.
 5. Publish contracts as a versioned artifact or generated types. Sibling source
    imports must not be required to build either repository.
 
