@@ -52,14 +52,10 @@ test("bookmarks persist across navigation and reload, then can be removed", asyn
   ).toBeVisible();
 });
 
-test("lab and path links lead to briefings with a demo entry point", async ({
+test("catalog links lead to briefings with a demo entry point", async ({
   page,
 }) => {
-  await page.goto("/paths");
-  await page
-    .getByRole("link", { name: "Web security foundations", exact: true })
-    .click();
-  await expect(page.locator(".path-step")).toHaveCount(3);
+  await page.goto("/labs");
   await page.getByRole("link", { name: "Cookie Monster", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Cookie Monster.",
@@ -96,7 +92,7 @@ test("navigation and layout work at the current viewport", async ({
     await dialog.getByRole("link", { name: "Learning paths" }).click();
     await expect(dialog).not.toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Find your direction." }),
+      page.getByRole("heading", { name: "Learning paths are growing." }),
     ).toBeVisible();
     await menu.click();
     await page.keyboard.press("Escape");
@@ -111,7 +107,7 @@ test("navigation and layout work at the current viewport", async ({
       .getByRole("link", { name: "Learning paths" })
       .click();
     await expect(
-      page.getByRole("heading", { name: "Find your direction." }),
+      page.getByRole("heading", { name: "Learning paths are growing." }),
     ).toBeVisible();
   }
   expect(
