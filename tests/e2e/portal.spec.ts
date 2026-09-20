@@ -5,9 +5,9 @@ test("catalog combines search, category and difficulty; empty state can recover"
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/");
+  await page.goto("/labs");
   await expect(
-    page.getByRole("heading", { name: "Welcome to the range." }),
+    page.getByRole("heading", { name: "Find your next discovery." }),
   ).toBeVisible();
   await expect(page.getByTestId("lab-card")).toHaveCount(12);
   await page.getByRole("button", { name: "Web security", exact: true }).click();
@@ -31,7 +31,7 @@ test("catalog combines search, category and difficulty; empty state can recover"
 test("bookmarks persist across navigation and reload, then can be removed", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/labs");
   await page
     .getByRole("button", { name: "Save Cookie Monster", exact: true })
     .click();
@@ -87,7 +87,7 @@ test("navigation and layout work at the current viewport", async ({
   page,
   isMobile,
 }) => {
-  await page.goto("/");
+  await page.goto("/labs");
   if (isMobile) {
     const menu = page.getByRole("button", { name: "Open navigation" });
     await menu.click();
