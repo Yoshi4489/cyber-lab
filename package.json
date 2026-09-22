@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
+    "api:types": "node scripts/generate-api-types.mjs",
     "start": "next start --hostname 127.0.0.1",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
@@ -35,6 +36,7 @@
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.0.0",
+    "openapi-typescript": "^7.13.0",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.9.0"
   }
