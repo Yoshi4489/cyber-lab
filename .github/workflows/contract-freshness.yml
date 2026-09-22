@@ -1,0 +1,28 @@
+name: Backend contract freshness
+
+on:
+  workflow_dispatch:
+    inputs:
+      backend_url:
+        description: HTTPS backend API origin that exposes GET /v1/openapi.json
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BACKEND_URL: ${{ inputs.backend_url }}
+      NODE_ENV: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run api:types -- --check
