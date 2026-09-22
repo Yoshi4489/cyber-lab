@@ -36,6 +36,7 @@ export default defineConfig({
       command: "node tests/fixtures/backend.mjs",
       url: "http://127.0.0.1:4101/healthz",
       reuseExistingServer: false,
+      env: { BACKEND_FIXTURE_LISTEN: "true" },
     },
     {
       command: "npm run start -- --port 3100",
