@@ -21,11 +21,7 @@ const server = createServer(async (request, response) => {
       return;
     }
     response.end(
-      JSON.stringify(
-        scenario === "invalid"
-          ? { status: "ok", service: "different-service" }
-          : { status: "ok", service: "cyber-range-backend" },
-      ),
+      JSON.stringify(scenario === "invalid" ? { status: "different" } : { status: "ok" }),
     );
     return;
   }
