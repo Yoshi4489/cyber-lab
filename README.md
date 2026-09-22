@@ -96,6 +96,25 @@ A production preview can run with `npm run build` followed by `npm start`.
 Vercel is the chosen preview hosting target. This change does not provision or
 publish a Vercel project.
 
+### Backend contract types
+
+The frontend consumes the backend through a server-only adapter; it never
+imports sibling repository source. When the backend is running, refresh the
+committed generated types from its public contract:
+
+```powershell
+$env:BACKEND_URL = "http://127.0.0.1:4000"
+npm run api:types
+npm run api:types -- --check
+```
+
+The generator fetches `GET /v1/openapi.json`, validates the configured API
+origin, and writes `src/features/backend/generated/openapi.ts`. It does not
+write or maintain a copied OpenAPI document. Generated types and the adapter
+are Phase 1 groundwork only; the browser-local demo remains the active UI
+until later frontend phases connect catalog, authentication, and lifecycle
+flows.
+
 ### Demo state
 
 | Storage key | Purpose |
