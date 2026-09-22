@@ -115,6 +115,14 @@ are Phase 1 groundwork only; the browser-local demo remains the active UI
 until later frontend phases connect catalog, authentication, and lifecycle
 flows.
 
+The **Backend contract freshness** GitHub Actions workflow provides the
+equivalent read-only check from CI. Run it with a routable HTTPS backend API
+origin after a backend contract release; it fails if the committed types do
+not match `GET /v1/openapi.json` and never rewrites files. Full automatic
+cross-repository enforcement requires the backend release workflow to dispatch
+this check (or publish a contract endpoint/artifact); this frontend repository
+does not assume a deployment URL or import backend source.
+
 ### Demo state
 
 | Storage key | Purpose |
