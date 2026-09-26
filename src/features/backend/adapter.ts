@@ -171,7 +171,7 @@ async function getJson<T>(path: string, schema: z.ZodType<T>): Promise<T> {
 }
 
 async function requestBackend(path: string): Promise<Response> {
-  const base = backendBaseUrl();
+  const base = getBackendBaseUrl();
   try {
     return await fetch(new URL(path, base), {
       cache: "no-store",
@@ -187,7 +187,7 @@ async function requestBackend(path: string): Promise<Response> {
   }
 }
 
-function backendBaseUrl(): URL {
+export function getBackendBaseUrl(): URL {
   const configured = process.env.BACKEND_URL;
   if (!configured) {
     throw new BackendAdapterError("BACKEND_URL is not configured.");

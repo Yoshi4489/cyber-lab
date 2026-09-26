@@ -14,10 +14,10 @@ const challenge = {
   tags: ["http", "intro"],
 };
 
-export function createBackendFixture() {
+export function createBackendFixture({ bffAuthSecret = "" } = {}) {
   let scenario = "healthy";
   const requests = [];
-  const server = createServer((request, response) => {
+  const server = createServer(async (request, response) => {
     const requestUrl = request.url ?? "/";
     if (request.method === "POST" && requestUrl.startsWith("/scenario/")) {
       scenario = requestUrl.slice("/scenario/".length);
@@ -25,10 +25,12 @@ export function createBackendFixture() {
       return;
     }
 
+    const body = await readRequestBody(request);
     requests.push({
       method: request.method,
       url: requestUrl,
       headers: request.headers,
+      body,
     });
 
     if (scenario === "redirect") {
@@ -54,6 +56,29 @@ export function createBackendFixture() {
     if (scenario === "invalid") {
       sendJson(response, 200, { unexpected: true });
       return;
+    }
+
+    if (request.method === "POST" && requestUrl.startsWith("/v1/auth/")) {
+      if (request.headers.authorization !== `Bearer ${bffAuthSecret}`) {
+        sendJson(response, 401, {
+          code: "UNAUTHORIZED",
+          message: "Invalid BFF credential.",
+          correlationId,
+        });
+        return;
+      }
+      if (requestUrl === "/v1/auth/login") {
+        sendJson(response, 200, { ...resolvedSession, sessionToken });
+        return;
+      }
+      if (requestUrl === "/v1/auth/session") {
+        sendJson(response, 200, resolvedSession);
+        return;
+      }
+      if (requestUrl === "/v1/auth/logout") {
+        response.writeHead(204).end();
+        return;
+      }
     }
 
     if (requestUrl === "/healthz") {
@@ -108,6 +133,27 @@ export function createBackendFixture() {
       return [...requests];
     },
   };
+}
+
+const sessionToken = "A".repeat(43);
+const resolvedSession = {
+  sessionId: "943eced9-5a8e-4160-80c5-ef9021aab53f",
+  user: {
+    id: "d7c932ea-e0ad-41bb-99e3-b4f9d0971e28",
+    email: "learner@example.test",
+    displayName: "Loopback Learner",
+    role: "player",
+    emailVerified: true,
+  },
+  allowedScopes: ["instances:read", "instances:write"],
+  idleExpiresAt: "2026-09-22T00:30:00.000Z",
+  absoluteExpiresAt: "2026-12-22T00:00:00.000Z",
+};
+
+async function readRequestBody(request) {
+  const chunks = [];
+  for await (const chunk of request) chunks.push(chunk);
+  return Buffer.concat(chunks).toString();
 }
 
 function sendJson(response, status, body) {
